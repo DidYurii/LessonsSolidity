@@ -69,16 +69,16 @@ function getDate(uint256 timestamp) pure public returns (uint256 year, uint256 m
              isBirth = true;
              _teammate[i].gotMoney = true;
              sendToTeammate(i);
-             
+             emit HappyBirthday (_teammate[i].name, _teammate[i].acount);
               }
              
             }
             if (isBirth == false) {
+                emit NoBirthdayFound (block.timestamp);
                 revert ("none found");
             }
           
            
-            
   }
 
 
