@@ -26,7 +26,6 @@ contract BirthdayPayout {
  }
 event NewTeammate(address acount, string name );
 event HappyBirthday (string name, address acount);
-event NoBirthdayFound (uint256 timestand);
 
   function addTeammate(address acount, string memory name, uint256 salary, uint256 birthday ) public OnlyOwner{
       require (msg.sender != acount, "cannot be added the owner");
@@ -74,12 +73,8 @@ function getDate(uint256 timestamp) pure public returns (uint256 year, uint256 m
              
             }
             if (isBirth == false) {
-                emit NoBirthdayFound (block.timestamp);
-                revert ("none found");
+                 revert ("none found");
             }
-          
            
   }
-
-
 }
