@@ -56,5 +56,4 @@ contract ContactBook{
          _;
          emit NewContact(name, _contacts.length);
      }
-
 }

@@ -24,7 +24,7 @@ library StringComparer{
     
 }
 
-contract HasName{
+abstract contract HasName{
     string internal _name;
     constructor(string memory name){
         _name=name;
@@ -88,10 +88,10 @@ contract Wolf is MeatEater{
     }
 }
 
-contract Dog is MeatEater, PlantEater, HasName {
+contract Dog is Animal, HasName {
     constructor(string memory name) HasName(name){
     }
-     function eat(string memory food) view override(PlantEater, MeatEater)   public returns (string memory){
+     function eat(string memory food) view override   public returns (string memory){
          require (!StringComparer.compare(food,"chocolate"), "chocolate is harmful for dog");
        return super.eat(food);
     }
