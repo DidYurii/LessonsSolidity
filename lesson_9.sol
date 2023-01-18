@@ -13,7 +13,8 @@ library StringComparer{
     }
 }
  abstract contract Animal is ILiving {
-       
+       string constant MEAT = "meat";
+       string constant PLANT = "plant";
     function eat(string memory food) view virtual  public returns(string memory){
     return string.concat("Animal eats ", food);
 }
@@ -36,8 +37,7 @@ abstract contract HasName{
 }
 
  abstract contract PlantEater is Animal{
-    string constant PLANT = "plant";
-
+   
     modifier eatOnlyPlant(string memory food){
         require(StringComparer.compare(food,PLANT),"Can only eat plant food");
         _;
@@ -49,13 +49,23 @@ abstract contract HasName{
 }
 
 abstract contract MeatEater is Animal {
-string constant MEAT = "meat";
 
 modifier eatOnlyMeat(string memory food){
     require(StringComparer.compare(food, MEAT), "Can only eat meat");
     _;
 }
 function eat(string memory food)  view override virtual  public eatOnlyMeat(food) returns(string memory){
+        return super.eat(food);
+    }
+}
+
+abstract contract PlantMeatEater is Animal {
+
+modifier eatOnlyPlantMeat(string memory food){
+    require(StringComparer.compare(food, MEAT) || StringComparer.compare(food,PLANT), "Can only eat meat or plant");
+    _;
+}
+function eat(string memory food)  view override virtual  public eatOnlyPlantMeat(food) returns(string memory){
         return super.eat(food);
     }
 }
@@ -88,10 +98,10 @@ contract Wolf is MeatEater{
     }
 }
 
-contract Dog is Animal, HasName {
+contract Dog is PlantMeatEater, HasName {
     constructor(string memory name) HasName(name){
     }
-     function eat(string memory food) view override   public returns (string memory){
+     function eat(string memory food) view override public returns (string memory){
          require (!StringComparer.compare(food,"chocolate"), "chocolate is harmful for dog");
        return super.eat(food);
     }
